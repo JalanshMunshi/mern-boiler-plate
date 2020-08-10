@@ -10,9 +10,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 const uri = config.mongoURI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true  })
-        .then(() => console.log('MongoDB connected.'))
-        .catch((err) => console.log(`MongoDB connection failed: ${err}.`));
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+}).then(() => console.log('MongoDB connected.'))
+  .catch((err) => console.log(`MongoDB connection failed: ${err}.`));
 
 // This endpoint is for the middleware.
 // Middleware is required to see if the user is
@@ -64,6 +68,20 @@ app.post('/api/user/login', (req, res) => {
                         loginSuccess: true
                     });
             });
+        });
+    });
+});
+
+app.get('/api/user/logout', auth, (req, res) => {
+    User.findOneAndUpdate({_id: req.user._id}, {token: ""}, (err, user) => {
+        if(err) {
+            return res.json({
+                logoutSuccess: false,
+                err
+            });
+        }
+        return res.status(200).send({
+            logoutSuccess: true
         });
     });
 });
