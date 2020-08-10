@@ -18,6 +18,11 @@ mongoose.connect(uri, {
 }).then(() => console.log('MongoDB connected.'))
   .catch((err) => console.log(`MongoDB connection failed: ${err}.`));
 
+
+app.get('/', (req, res) => {
+    res.json({'deploy': 'App successfully deployed on Heroku.'})
+})
+
 // This endpoint is for the middleware.
 // Middleware is required to see if the user is
 // logged in or not before the user uploads a file.
