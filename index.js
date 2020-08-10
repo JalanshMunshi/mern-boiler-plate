@@ -52,12 +52,9 @@ app.post('api/users/login', (req, res) => {
                 .json({
                     loginSuccess: true
                 });
-        })
-    })
-    // compare the password
-
-    // generate token
-})
+        });
+    });
+});
 
 port = 5000;
 
