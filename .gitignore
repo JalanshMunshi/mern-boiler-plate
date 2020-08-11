@@ -1,7 +1,8 @@
 /node_modules
+/client/node_modules
 /build
 /.env
-/config/dev.js
+/server/config/dev.js
 .vscode
 
 npm-debug.log*
