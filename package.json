@@ -8,17 +8,21 @@
     "npm": "6.14.6"
   },
   "scripts": {
-    "start": "nodemon server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm run start --prefix client",
+    "client:dev": "concurrently \"npm run server\" \"cd client && npm run start\""
   },
   "keywords": [],
   "author": "Jalansh Munshi",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "concurrently": "^5.3.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27",
     "nodemon": "^2.0.4"
