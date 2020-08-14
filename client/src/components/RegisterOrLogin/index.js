@@ -1,6 +1,60 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/user_actions';
+import Axios from 'axios';
 
 class Login extends Component {
+
+    state = {
+        email: "",
+        password: "",
+        errors: []
+    };
+
+    handleChange = function(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    submitForm = function(event) {
+        event.preventDefault();
+        const data = {
+            email: this.state.email,
+            password: this.state.password
+        };
+        if(this.isFormValid(this.state)) {
+            this.setState({
+                errors: []
+            });
+            this.props.dispatch(loginUser(data))
+            .then(response => {
+                if(response.payload.loginSuccess === true) {
+                    this.props.history.push('/');
+                } else {
+                    this.setState({
+                        errors: this.state.errors.concat("Invalid email or password.")
+                    });
+                }
+            })
+            .catch(err => console.log(err));
+        } else {
+            this.setState({
+                errors: this.state.errors.concat("Form invalid.")
+            });
+            console.log(this.state.errors);
+        }
+        
+    }
+
+    isFormValid = function({ email, password }) {
+        return email && password;
+    }
+
+    displayErrors = function(errors) {
+        errors.map((error, i) => <p key={i}>{error}</p>)
+    }
+
     render() {
         return (
             <div className="container">
@@ -11,8 +65,8 @@ class Login extends Component {
                             <div className="input-field col s6">
                                 <input 
                                     name="email"
-                                    // value={this.state.email}
-                                    // onChange={this.handleChange()}
+                                    value={this.state.email}
+                                    onChange={event => this.handleChange(event)}
                                     id="email"
                                     type="email"
                                     className="validate"
@@ -26,12 +80,19 @@ class Login extends Component {
                                 />
                             </div>
                         </div>
+
+                        {this.state.errors.length > 0 && (
+                            <div>
+                                {this.displayErrors(this.state.errors)}
+                            </div>
+                        )}
+
                         <div className="row">
                             <div className="input-field col s6">
                                 <input 
                                     name="password"
-                                    // value={this.state.password}
-                                    // onChange={this.handleChange()}
+                                    value={this.state.password}
+                                    onChange={event => this.handleChange(event)}
                                     id="password"
                                     type="password"
                                     className="validate"
@@ -51,7 +112,7 @@ class Login extends Component {
                                     className="btn waves-effect red lighten-2"
                                     type="submit"
                                     name="action"
-                                    // onClick={this.submitForm}
+                                    onClick={event => this.submitForm(event)}
                                 >
                                     Login
                                 </button>
@@ -66,4 +127,10 @@ class Login extends Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(Login);

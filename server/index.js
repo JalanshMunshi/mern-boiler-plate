@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 // This endpoint is for the middleware.
 // Middleware is required to see if the user is
 // logged in or not before the user uploads a file.
-app.get('/api/user/auth', auth, (req, res) => {
+app.get('/api/users/auth', auth, (req, res) => {
     res.status(200).json({
         _id: req._id,
         isAuth: true,
@@ -44,7 +44,7 @@ app.post('/api/users/register', (req, res) => {
     .catch((err) => res.status(400).json(`Unable to add user. Error: ${err}.`));
 })
 
-app.post('/api/user/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
     // find is the email exists or not
     User.findOne({ email: req.body.email }, (err, user) => {
         if(user === null) {
