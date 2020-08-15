@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/user_actions';
-import Axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
 
@@ -52,7 +52,9 @@ class Login extends Component {
     }
 
     displayErrors = function(errors) {
-        errors.map((error, i) => <p key={i}>{error}</p>)
+        if(errors.length > 0) {
+            return errors.map((error, i) => <p key={i}>{error}</p>)
+        }
     }
 
     render() {
@@ -72,7 +74,7 @@ class Login extends Component {
                                     className="validate"
                                     required
                                 />
-                                <label htmlFor="email">Email</label>
+                                <label className="active" htmlFor="email">Email</label>
                                 <span
                                     className="helper-text"
                                     data-error="Please enter a valid email."
@@ -80,12 +82,6 @@ class Login extends Component {
                                 />
                             </div>
                         </div>
-
-                        {this.state.errors.length > 0 && (
-                            <div>
-                                {this.displayErrors(this.state.errors)}
-                            </div>
-                        )}
 
                         <div className="row">
                             <div className="input-field col s6">
@@ -98,13 +94,16 @@ class Login extends Component {
                                     className="validate"
                                     required
                                 />
-                                <label htmlFor="password">Password</label>
+                                <label className="active" htmlFor="password">Password</label>
                                 <span
                                     className="helper-text"
                                     data-error="Incorrect password."
                                     data-success="Correct password."
                                 />
                             </div>
+                        </div>
+                        <div>
+                            {this.displayErrors(this.state.errors)}
                         </div>
                         <div className="row">
                             <div className="col s6">
@@ -116,12 +115,20 @@ class Login extends Component {
                                 >
                                     Login
                                 </button>
+                                &nbsp; &nbsp;
+                                <Link to="/register">
+                                    <button
+                                        className="btn waves-effect red lighten-2"
+                                        type="submit"
+                                        name="action"
+                                    >
+                                        Sign up
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </form>
-                
                 </div>
-                This is the login page.
             </div>
         );
     }

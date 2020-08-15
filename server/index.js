@@ -40,7 +40,10 @@ app.get('/api/users/auth', auth, (req, res) => {
 app.post('/api/users/register', (req, res) => {
     const user = new User(req.body);
     user.save()
-    .then(() => res.status(200).json(`User '${req.body.firstname}' added!`))
+    .then(() => res.status(200).json({
+        success: true,
+        userData: user
+    }))
     .catch((err) => res.status(400).json(`Unable to add user. Error: ${err}.`));
 })
 
