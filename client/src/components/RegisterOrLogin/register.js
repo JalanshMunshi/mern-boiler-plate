@@ -86,13 +86,21 @@ class Register extends Component {
             });
             this.props.dispatch(registerUser(data))
             .then(response => {
-                console.log(response);
-                // if(response.payload.success === true) {
-
-                // } else {
-
-                // }
+                if(response.payload.success === true) {
+                    this.props.history.push('/login');
+                } else {
+                    this.setState({
+                        errors: this.state.errors.concat("Could not send data to database.")
+                    });
+                }
             })
+            .catch(err => {
+                this.setState({
+                    errors: this.state.errors.concat(err)
+                });
+            });
+        } else {
+            console.error('Form is not valid.');
         }
     }
 
